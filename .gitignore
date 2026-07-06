@@ -1,0 +1,5 @@
+# Local development notes and workspace state
+.dev
+.code
+*.code-workspace
+*.tar 
