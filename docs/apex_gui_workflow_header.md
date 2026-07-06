@@ -339,9 +339,14 @@ No CI:
 No guard theater:
 - confirmed no guard scripts/policy gates added or relied on
 
+Source commit message:
+- <short git commit message for source changes>
+
 Patch artifact:
 - <download link>
 ```
+
+Commit messages must name only what hit source steel: behavior, corrections, goldens, tests, and accepted UI adjustments. Do not put workflow, patch mechanics, or documentation-process chatter in source commit messages unless that is the actual changed surface.
 
 Do not print inline unified diffs by default. Print them only when the artifact link fails, the operator asks for inline diffs, or artifact delivery is not possible.
 

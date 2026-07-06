@@ -1,0 +1,9 @@
+[package]
+name = "apex-ui"
+edition.workspace = true
+license.workspace = true
+version.workspace = true
+publish = false
+
+[dependencies]
+eframe.workspace = true

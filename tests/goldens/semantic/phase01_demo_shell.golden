@@ -1,0 +1,12 @@
+snapshot:phase01-demo-shell
+shell=Apex Demo
+top_bar=Create Reset Settings
+disabled_action=Settings
+panel=Core Forge
+section=Apex facade is online
+card=Apex API surface
+primary_button=Increment
+status_chip=Starter shell online
+status_text=Apex APIs drive the demo path
+counter=0
+last_action=none

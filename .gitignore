@@ -3,3 +3,7 @@
 .code
 *.code-workspace
 *.tar 
+root.patch
+
+# Rust build output
+target/

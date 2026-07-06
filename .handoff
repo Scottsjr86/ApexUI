@@ -1,0 +1,75 @@
+Active phase: Apex GUI Phase 01 - Core Forge Shell
+Newest base used: ApexUI_phase_1_base_3.tar
+Patch scope: promote disabled action behavior from response-only coverage into the visible starter shell
+
+What changed:
+- Added disabled quiet button/action APIs to ApexUi.
+- Added a disabled Settings action to the demo top bar.
+- Kept disabled Settings action inert; ApexResponse still prevents disabled actions from emitting.
+- Updated the Phase 01 semantic snapshot and golden to include the disabled Settings action.
+- Added semantic test coverage for the disabled Settings action entry.
+- Updated the active Phase 01 plan with a base_3 adjustment note and a pending operator check for the visible disabled action.
+
+What is now real:
+- The demo shell shows a disabled top-bar action as a real Apex API path, not a hidden unit-test-only behavior.
+- App/demo code still uses Apex APIs for the primary UI path.
+- Disabled responses cannot activate, cannot report pressed, and cannot emit actions.
+- Accepted starter shell semantics now include top-bar disabled-action structure.
+
+What remains placeholder/unsupported:
+- Operator has not yet accepted the visible disabled Settings action feel for this patch.
+- Keyboard traversal and accessibility are still not claimed beyond egui-exposed focus state used by button painting.
+- The raw egui escape hatch exists on ApexFrame but is not used by the demo primary path.
+- Density exists as a starter token and only affects button height so far.
+- Visual screenshot goldens remain deferred until the operator wants a visual lock lane.
+- Phase 01 seal docs/Rustdoc remain pending until the operator explicitly closes the phase.
+
+Commands run:
+- grep -R "egui::\|eframe::" -n apps/apex-demo: passed; no raw low-level UI refs found in the demo app.
+- find . for .github, yml/yaml, and guard files: passed; no CI or guard-script files found.
+- python brace-balance scan over Rust files: passed; no simple bracket mismatch found.
+- git diff whitespace check: passed; no whitespace warnings produced.
+- git apply --check against a clean ApexUI_phase_1_base_3.tar extraction: passed.
+- cargo fmt --check: not run; cargo/rustfmt unavailable in this sandbox.
+- cargo build: not run; cargo unavailable in this sandbox.
+- cargo test: not run; cargo unavailable in this sandbox.
+- cargo run -p apex-demo: not run; GUI/manual display check still required.
+
+Commands still required:
+- cargo fmt --check
+- cargo build
+- cargo test
+- cargo run -p apex-demo
+
+Operator manual checks:
+- Launch the demo as a native window.
+- Confirm the top bar shows Create, Reset, and disabled Settings.
+- Confirm disabled Settings does not change Count or Last action.
+- Click Increment twice, then Reset; Count should return to 0 and Last action should read reset.
+- Click Create; Count should stay unchanged and Last action should read create.
+- Resize below normal desktop size and confirm the window respects the starter min-size.
+- Inspect apps/apex-demo/src/main.rs and confirm the main UI path still uses Apex APIs, not raw egui widgets.
+
+Tests/goldens status:
+- Semantic golden updated: tests/goldens/semantic/phase01_demo_shell.golden
+- Behavior golden unchanged: tests/goldens/behavior/phase01_demo_counter.golden
+- Unit test added for disabled Settings semantic entry.
+- Rust tests still need to be run locally because cargo is unavailable in this sandbox.
+
+Platform/package impact:
+- No dependency changes.
+- Uses eframe 0.35.0 as the runtime substrate through the apex-ui workspace dependency.
+- apex-demo depends only on apex-ui.
+- No egui fork, no renderer surgery, no custom wgpu path.
+
+Exact next action:
+- Run cargo fmt --check, cargo build, cargo test, and cargo run -p apex-demo; then operator-check disabled Settings feel and inert behavior.
+
+Source commit message:
+- Add disabled Settings action to Apex demo shell
+
+No CI:
+- confirmed no CI added or relied on
+
+No guard theater:
+- confirmed no guard scripts/policy gates added or relied on

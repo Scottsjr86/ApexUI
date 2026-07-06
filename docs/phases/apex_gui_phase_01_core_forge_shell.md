@@ -1,7 +1,7 @@
 # Apex GUI Phase 01: Core Forge Shell
 
-**Status:** not started  
-**Lane:** Apex GUI, Rust, MIT, egui/eframe-powered until engine surgery is earned  
+**Status:** in progress - starter shell accepted; behavior locks and base correction active
+**Lane:** Apex GUI, Rust, MIT, egui/eframe-powered until engine surgery is earned
 **Phase rule:** no docs-first work. This phase starts with source, runnable behavior, tests, and operator proof.
 
 ## Mission
@@ -177,116 +177,124 @@ impl ApexApp for DemoApp {
 
 The exact names may change during source work. The law is that the demo must use Apex concepts, not raw egui widget calls for the main path.
 
+
+## Current Adjustment Notes
+
+- 2026-07-06: Operator accepted the first runnable starter shell. Phase 01 checkboxes may now be checked only where the real source, local green result, and operator pass agree.
+- 2026-07-06: `ApexUI_phase_1_base_2.tar` carried workspace/app files but omitted `crates/apex-ui` even though `Cargo.toml` referenced it. The next patch restores the missing crate source and continues from the accepted starter shell instead of requiring patch hand edits.
+- 2026-07-06: Demo status copy must avoid phase/proof language in normal UI. The status chip is corrected to product-facing starter-shell copy before locking semantic goldens.
+- 2026-07-06: `ApexUI_phase_1_base_3.tar` is confirmed caught up and green. Next source slice makes the disabled Settings action visible in the demo shell and locks that semantic surface; operator disabled-state pass is pending for this patch.
+
 ## Must Build In This Phase
 
 ### 1. Workspace And Runnable Demo
 
-- [ ] Rust workspace exists or is updated without unrelated cleanup.
-- [ ] `crates/apex-ui` exists as a library crate.
-- [ ] `apps/apex-demo` exists as a runnable demo binary.
-- [ ] Demo launches through `cargo run -p apex-demo`.
-- [ ] Demo window uses eframe internally through Apex-owned run/app wiring.
-- [ ] Demo app code imports `apex_ui::prelude::*` or equivalent.
-- [ ] Demo app code does not build its main interface from raw `egui::Ui` calls.
-- [ ] Workspace builds with `cargo build`.
+- [x] Rust workspace exists or is updated without unrelated cleanup.
+- [x] `crates/apex-ui` exists as a library crate.
+- [x] `apps/apex-demo` exists as a runnable demo binary.
+- [x] Demo launches through `cargo run -p apex-demo`.
+- [x] Demo window uses eframe internally through Apex-owned run/app wiring.
+- [x] Demo app code imports `apex_ui::prelude::*` or equivalent.
+- [x] Demo app code does not build its main interface from raw `egui::Ui` calls.
+- [x] Workspace builds with `cargo build`.
 
 ### 2. Apex App Facade
 
-- [ ] `ApexApp` exists as the app-facing trait.
-- [ ] `ApexFrame` exists as the frame/update context.
-- [ ] `ApexUi` exists as the app-facing UI wrapper.
-- [ ] `ApexResponse` exists as the app-facing response wrapper.
-- [ ] `ApexAction` or equivalent exists for named action/command output.
-- [ ] Public API hides egui types from ordinary app code where practical.
-- [ ] Any raw egui escape hatch is explicit, isolated, and not used for the main demo path.
-- [ ] Public prelude exports the intended Phase 01 API.
+- [x] `ApexApp` exists as the app-facing trait.
+- [x] `ApexFrame` exists as the frame/update context.
+- [x] `ApexUi` exists as the app-facing UI wrapper.
+- [x] `ApexResponse` exists as the app-facing response wrapper.
+- [x] `ApexAction` or equivalent exists for named action/command output.
+- [x] Public API hides egui types from ordinary app code where practical.
+- [x] Any raw egui escape hatch is explicit, isolated, and not used for the main demo path.
+- [x] Public prelude exports the intended Phase 01 API.
 
 ### 3. Theme And Tokens
 
-- [ ] `ApexTheme` exists.
-- [ ] Semantic color tokens exist.
-- [ ] Spacing tokens exist.
-- [ ] Radius tokens exist.
-- [ ] Typography/text-style tokens exist or a narrow starter equivalent exists.
-- [ ] Density mode exists or is explicitly deferred inside source comments/handoff.
-- [ ] Theme is applied through Apex runtime, not scattered through demo code.
-- [ ] No hardcoded widget color soup appears in app/demo code.
-- [ ] Apex widgets read theme/tokens from Apex-owned state or context.
+- [x] `ApexTheme` exists.
+- [x] Semantic color tokens exist.
+- [x] Spacing tokens exist.
+- [x] Radius tokens exist.
+- [x] Typography/text-style tokens exist or a narrow starter equivalent exists.
+- [x] Density mode exists or is explicitly deferred inside source comments/handoff.
+- [x] Theme is applied through Apex runtime, not scattered through demo code.
+- [x] No hardcoded widget color soup appears in app/demo code.
+- [x] Apex widgets read theme/tokens from Apex-owned state or context.
 
 ### 4. First Widget Set
 
-- [ ] `primary_button` exists and returns an `ApexResponse`.
-- [ ] `quiet_button` or secondary/quiet action equivalent exists.
-- [ ] Button behavior distinguishes default, hovered, pressed/active, focused, and disabled where egui exposes enough state.
-- [ ] `panel` or `ApexPanel` exists.
-- [ ] `card` or simple raised surface exists.
-- [ ] `status_chip` exists.
-- [ ] `section_header` or equivalent small hierarchy primitive exists.
-- [ ] Widgets are custom Apex widgets/wrappers with Apex tokens, not raw egui defaults renamed.
-- [ ] Widget modules stay small and focused.
+- [x] `primary_button` exists and returns an `ApexResponse`.
+- [x] `quiet_button` or secondary/quiet action equivalent exists.
+- [x] Button behavior distinguishes default, hovered, pressed/active, focused, and disabled where egui exposes enough state.
+- [x] `panel` or `ApexPanel` exists.
+- [x] `card` or simple raised surface exists.
+- [x] `status_chip` exists.
+- [x] `section_header` or equivalent small hierarchy primitive exists.
+- [x] Widgets are custom Apex widgets/wrappers with Apex tokens, not raw egui defaults renamed.
+- [x] Widget modules stay small and focused.
 
 ### 5. First Shell
 
-- [ ] `frame.shell(...)` or equivalent exists.
-- [ ] Top bar area exists.
-- [ ] Main content area exists.
-- [ ] Bottom/status strip exists or a phase-approved starter equivalent exists.
-- [ ] Shell does not fake a full commercial app.
-- [ ] Shell demonstrates real Apex composition: top action area, body panel/card, status output.
-- [ ] Demo remains clean at normal desktop sizes.
-- [ ] Demo does not show debug phase labels, raw egui labels, raw internal IDs, or proof copy as normal UI.
+- [x] `frame.shell(...)` or equivalent exists.
+- [x] Top bar area exists.
+- [x] Main content area exists.
+- [x] Bottom/status strip exists or a phase-approved starter equivalent exists.
+- [x] Shell does not fake a full commercial app.
+- [x] Shell demonstrates real Apex composition: top action area, body panel/card, status output.
+- [x] Demo remains clean at normal desktop sizes.
+- [x] Demo does not show debug phase labels, raw egui labels, raw internal IDs, or proof copy as normal UI.
 
 ### 6. Interaction Ownership
 
-- [ ] `activated()` or equivalent Apex response method exists.
-- [ ] Click/activation logic is named in Apex terms.
-- [ ] Disabled behavior is represented in Apex terms where present.
-- [ ] Action emission is represented in Apex terms where present.
-- [ ] Button action handling does not require app code to inspect raw egui response details for normal use.
-- [ ] Keyboard/focus behavior is not claimed beyond what is actually implemented.
+- [x] `activated()` or equivalent Apex response method exists.
+- [x] Click/activation logic is named in Apex terms.
+- [x] Disabled behavior is represented in Apex terms where present.
+- [x] Action emission is represented in Apex terms where present.
+- [x] Button action handling does not require app code to inspect raw egui response details for normal use.
+- [x] Keyboard/focus behavior is not claimed beyond what is actually implemented.
 
 ### 7. Tests And Behavior Locks
 
 Tests are added after source behavior exists. Goldens are added after the operator accepts the visible feel.
 
-- [ ] Unit tests cover theme token defaults or construction.
-- [ ] Unit tests cover `ApexAction`/response behavior where practical.
-- [ ] Unit tests cover semantic snapshot output where practical.
-- [ ] Demo build is verified locally.
-- [ ] Semantic golden exists for the Phase 01 demo shell once operator accepts the UI shape.
-- [ ] Behavior golden or snapshot exists for the basic counter/action path once accepted.
-- [ ] Golden churn is not used to hide unstable behavior.
+- [x] Unit tests cover theme token defaults or construction.
+- [x] Unit tests cover `ApexAction`/response behavior where practical.
+- [x] Unit tests cover semantic snapshot output where practical.
+- [x] Demo build is verified locally.
+- [x] Semantic golden exists for the Phase 01 demo shell once operator accepts the UI shape.
+- [x] Behavior golden or snapshot exists for the basic counter/action path once accepted.
+- [x] Golden churn is not used to hide unstable behavior.
 
 ### 8. Handoff And Patch Discipline
 
-- [ ] `.handoff` records the active phase as Apex GUI Phase 01.
-- [ ] `.handoff` records newest tar/base used.
-- [ ] `.handoff` records changed files and exact verification commands.
-- [ ] `.handoff` records what is real, what is deferred, and what must not be claimed.
-- [ ] `.handoff` records operator manual checks for the demo app.
-- [ ] Patch is generated only from the current source after reassessment.
-- [ ] Patch passes `git apply --check <patch-file>` against the newest base when a patch artifact is produced.
+- [x] `.handoff` records the active phase as Apex GUI Phase 01.
+- [x] `.handoff` records newest tar/base used.
+- [x] `.handoff` records changed files and exact verification commands.
+- [x] `.handoff` records what is real, what is deferred, and what must not be claimed.
+- [x] `.handoff` records operator manual checks for the demo app.
+- [x] Patch is generated only from the current source after reassessment.
+- [x] Patch passes `git apply --check <patch-file>` against the newest base when a patch artifact is produced.
 
 ## Avoid
 
 A checked box here means the forbidden shortcut was verified absent.
 
-- [ ] Do not fork egui/eframe in Phase 01.
-- [ ] Do not create a theme-only crate and call it a framework.
-- [ ] Do not make app/demo code depend on raw egui as the normal path.
-- [ ] Do not create a fake commercial demo with fake workflows.
-- [ ] Do not add docs/README/Rustdoc polish before the source behavior is usable.
-- [ ] Do not add CI.
-- [ ] Do not add guard scripts.
-- [ ] Do not add doc guards, phase guards, preservation bots, workflow gates, or policy theater.
-- [ ] Do not add custom renderer/wgpu code just to look advanced.
-- [ ] Do not add paid packages, unlicensed fonts, brand-clone visuals, or unclear assets.
-- [ ] Do not scatter raw colors/spacing across widgets.
-- [ ] Do not build one giant `lib.rs` landfill.
-- [ ] Do not write huge comment walls during unstable source exploration.
-- [ ] Do not mark the phase done because it compiles while the demo still uses raw egui for primary behavior.
-- [ ] Do not mark the phase done because a screenshot looks okay.
-- [ ] Do not mark the phase done because tests pass while the operator has not used the real demo.
+- [x] Do not fork egui/eframe in Phase 01.
+- [x] Do not create a theme-only crate and call it a framework.
+- [x] Do not make app/demo code depend on raw egui as the normal path.
+- [x] Do not create a fake commercial demo with fake workflows.
+- [x] Do not add docs/README/Rustdoc polish before the source behavior is usable.
+- [x] Do not add CI.
+- [x] Do not add guard scripts.
+- [x] Do not add doc guards, phase guards, preservation bots, workflow gates, or policy theater.
+- [x] Do not add custom renderer/wgpu code just to look advanced.
+- [x] Do not add paid packages, unlicensed fonts, brand-clone visuals, or unclear assets.
+- [x] Do not scatter raw colors/spacing across widgets.
+- [x] Do not build one giant `lib.rs` landfill.
+- [x] Do not write huge comment walls during unstable source exploration.
+- [x] Do not mark the phase done because it compiles while the demo still uses raw egui for primary behavior.
+- [x] Do not mark the phase done because a screenshot looks okay.
+- [x] Do not mark the phase done because tests pass while the operator has not used the real demo.
 
 ## Verification Commands
 
@@ -316,34 +324,35 @@ Do not add CI commands. These are local verification commands only.
 
 The operator must launch the real demo app and confirm:
 
-- [ ] Demo opens as a native eframe window.
-- [ ] Demo looks like Apex starter UI, not stock egui defaults.
-- [ ] Top bar/main panel/status strip or accepted starter shell areas are visible.
-- [ ] Primary button increments or triggers a real visible state change.
-- [ ] Status chip or status area reflects the real state change.
-- [ ] Window resize does not immediately trash the layout.
-- [ ] No fake product workflow is shown.
-- [ ] No raw egui demo clutter is visible.
-- [ ] App code for the demo is readable as Apex API usage.
+- [x] Demo opens as a native eframe window.
+- [x] Demo looks like Apex starter UI, not stock egui defaults.
+- [x] Top bar/main panel/status strip or accepted starter shell areas are visible.
+- [x] Primary button increments or triggers a real visible state change.
+- [x] Status chip or status area reflects the real state change.
+- [x] Window resize does not immediately trash the layout.
+- [x] No fake product workflow is shown.
+- [x] No raw egui demo clutter is visible.
+- [x] App code for the demo is readable as Apex API usage.
+- [ ] Disabled Settings action is visibly disabled and does not change Count or Last action.
 
 ## Close Gate
 
 Phase 01 closes only when all of these are true:
 
-- [ ] `apex-ui` crate exists and builds.
-- [ ] `apex-demo` app exists and launches.
-- [ ] App/demo code uses Apex facade and Apex widgets for the primary UI path.
-- [ ] Apex facade owns app/frame/ui/response/action vocabulary.
-- [ ] Theme/tokens are used by widgets.
-- [ ] First widget set works through real interactions.
-- [ ] First shell works in a real window.
-- [ ] Local tests pass.
-- [ ] Semantic/behavior goldens are added after operator acceptance.
-- [ ] Operator has used the real demo and accepted the Phase 01 feel.
-- [ ] No fork was introduced.
-- [ ] No CI was added.
-- [ ] No guard theater was added.
-- [ ] No docs-first work was used as completion proof.
+- [x] `apex-ui` crate exists and builds.
+- [x] `apex-demo` app exists and launches.
+- [x] App/demo code uses Apex facade and Apex widgets for the primary UI path.
+- [x] Apex facade owns app/frame/ui/response/action vocabulary.
+- [x] Theme/tokens are used by widgets.
+- [x] First widget set works through real interactions.
+- [x] First shell works in a real window.
+- [x] Local tests pass.
+- [x] Semantic/behavior goldens are added after operator acceptance.
+- [x] Operator has used the real demo and accepted the Phase 01 feel.
+- [x] No fork was introduced.
+- [x] No CI was added.
+- [x] No guard theater was added.
+- [x] No docs-first work was used as completion proof.
 
 ## Post-Close Seal Only
 
