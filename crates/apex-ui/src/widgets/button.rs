@@ -1,4 +1,7 @@
-use crate::{response::ApexResponse, theme::ApexTheme};
+use crate::{
+    response::{ApexInteractionState, ApexResponse},
+    theme::ApexTheme,
+};
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub(crate) enum ButtonKind {
@@ -71,17 +74,14 @@ fn button_fill(
     kind: ButtonKind,
     response: &ApexResponse,
 ) -> crate::theme::ApexColor {
-    if !response.enabled() {
-        return theme.colors.disabled_fill;
-    }
-
-    match kind {
-        ButtonKind::Primary if response.pressed() => theme.colors.accent_pressed,
-        ButtonKind::Primary if response.hovered() => theme.colors.accent_hover,
-        ButtonKind::Primary => theme.colors.accent,
-        ButtonKind::Quiet if response.pressed() => theme.colors.quiet_pressed,
-        ButtonKind::Quiet if response.hovered() => theme.colors.quiet_hover,
-        ButtonKind::Quiet => theme.colors.surface_raised,
+    match (kind, response.interaction_state()) {
+        (_, ApexInteractionState::Disabled) => theme.colors.disabled_fill,
+        (ButtonKind::Primary, ApexInteractionState::Pressed) => theme.colors.accent_pressed,
+        (ButtonKind::Primary, ApexInteractionState::Hovered) => theme.colors.accent_hover,
+        (ButtonKind::Primary, _) => theme.colors.accent,
+        (ButtonKind::Quiet, ApexInteractionState::Pressed) => theme.colors.quiet_pressed,
+        (ButtonKind::Quiet, ApexInteractionState::Hovered) => theme.colors.quiet_hover,
+        (ButtonKind::Quiet, _) => theme.colors.surface_raised,
     }
 }
 
@@ -90,15 +90,69 @@ fn button_stroke(
     kind: ButtonKind,
     response: &ApexResponse,
 ) -> crate::theme::ApexColor {
-    match (
-        kind,
-        response.enabled(),
-        response.hovered() || response.focused(),
-    ) {
-        (_, false, _) => theme.colors.border,
-        (ButtonKind::Primary, true, true) => theme.colors.focus_ring,
-        (ButtonKind::Primary, true, false) => theme.colors.accent,
-        (ButtonKind::Quiet, true, true) => theme.colors.focus_ring,
-        (ButtonKind::Quiet, true, false) => theme.colors.border,
+    match (kind, response.interaction_state()) {
+        (_, ApexInteractionState::Disabled) => theme.colors.border,
+        (ButtonKind::Primary, ApexInteractionState::Hovered | ApexInteractionState::Focused) => {
+            theme.colors.focus_ring
+        }
+        (ButtonKind::Primary, _) => theme.colors.accent,
+        (ButtonKind::Quiet, ApexInteractionState::Hovered | ApexInteractionState::Focused) => {
+            theme.colors.focus_ring
+        }
+        (ButtonKind::Quiet, _) => theme.colors.border,
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use crate::{response::ApexResponse, theme::ApexTheme};
+
+    use super::{ButtonKind, button_fill, button_stroke};
+
+    #[test]
+    fn button_fill_uses_apex_interaction_state_order() {
+        let theme = ApexTheme::default();
+        let disabled = ApexResponse::new(true, true, true, true, false);
+        let pressed = ApexResponse::new(false, true, true, true, true);
+        let hovered = ApexResponse::new(false, true, false, true, true);
+        let idle = ApexResponse::new(false, false, false, false, true);
+
+        assert_eq!(
+            button_fill(&theme, ButtonKind::Primary, &disabled),
+            theme.colors.disabled_fill
+        );
+        assert_eq!(
+            button_fill(&theme, ButtonKind::Primary, &pressed),
+            theme.colors.accent_pressed
+        );
+        assert_eq!(
+            button_fill(&theme, ButtonKind::Primary, &hovered),
+            theme.colors.accent_hover
+        );
+        assert_eq!(
+            button_fill(&theme, ButtonKind::Primary, &idle),
+            theme.colors.accent
+        );
+    }
+
+    #[test]
+    fn button_stroke_treats_focus_and_hover_as_visible_attention() {
+        let theme = ApexTheme::default();
+        let focused = ApexResponse::new(false, false, false, true, true);
+        let hovered = ApexResponse::new(false, true, false, false, true);
+        let disabled = ApexResponse::new(false, true, false, true, false);
+
+        assert_eq!(
+            button_stroke(&theme, ButtonKind::Quiet, &focused),
+            theme.colors.focus_ring
+        );
+        assert_eq!(
+            button_stroke(&theme, ButtonKind::Quiet, &hovered),
+            theme.colors.focus_ring
+        );
+        assert_eq!(
+            button_stroke(&theme, ButtonKind::Quiet, &disabled),
+            theme.colors.border
+        );
     }
 }

@@ -1,23 +1,22 @@
 Active phase: Apex GUI Phase 01 - Core Forge Shell
-Newest base used: ApexUI_phase_1_base_3.tar
-Patch scope: promote disabled action behavior from response-only coverage into the visible starter shell
+Newest base used: ApexUI_phase_1_base_4.tar
+Patch scope: promote response-state priority into Apex-owned interaction language and lock it with a golden
 
 What changed:
-- Added disabled quiet button/action APIs to ApexUi.
-- Added a disabled Settings action to the demo top bar.
-- Kept disabled Settings action inert; ApexResponse still prevents disabled actions from emitting.
-- Updated the Phase 01 semantic snapshot and golden to include the disabled Settings action.
-- Added semantic test coverage for the disabled Settings action entry.
-- Updated the active Phase 01 plan with a base_3 adjustment note and a pending operator check for the visible disabled action.
+- Added ApexInteractionState with stable state names for disabled, pressed, hovered, focused, and idle responses.
+- Added ApexResponse::interaction_state() so app/framework code can reason in Apex terms instead of raw boolean soup.
+- Routed button fill/stroke decisions through ApexInteractionState.
+- Added unit coverage for response state priority and button visual-state decisions.
+- Added a semantic golden for Phase 01 interaction-state priority.
+- Marked the disabled Settings operator manual check complete in the active Phase 01 plan after operator green.
 
 What is now real:
-- The demo shell shows a disabled top-bar action as a real Apex API path, not a hidden unit-test-only behavior.
-- App/demo code still uses Apex APIs for the primary UI path.
-- Disabled responses cannot activate, cannot report pressed, and cannot emit actions.
-- Accepted starter shell semantics now include top-bar disabled-action structure.
+- Disabled responses resolve to the disabled interaction state first and remain inert.
+- Pressed wins over hovered/focused, hovered wins over focused, focused wins over idle.
+- Button paint decisions consume the Apex interaction state contract.
+- The visible disabled Settings action was operator-accepted from base_4.
 
 What remains placeholder/unsupported:
-- Operator has not yet accepted the visible disabled Settings action feel for this patch.
 - Keyboard traversal and accessibility are still not claimed beyond egui-exposed focus state used by button painting.
 - The raw egui escape hatch exists on ApexFrame but is not used by the demo primary path.
 - Density exists as a starter token and only affects button height so far.
@@ -29,7 +28,7 @@ Commands run:
 - find . for .github, yml/yaml, and guard files: passed; no CI or guard-script files found.
 - python brace-balance scan over Rust files: passed; no simple bracket mismatch found.
 - git diff whitespace check: passed; no whitespace warnings produced.
-- git apply --check against a clean ApexUI_phase_1_base_3.tar extraction: passed.
+- git apply --check against a clean ApexUI_phase_1_base_4.tar extraction: passed.
 - cargo fmt --check: not run; cargo/rustfmt unavailable in this sandbox.
 - cargo build: not run; cargo unavailable in this sandbox.
 - cargo test: not run; cargo unavailable in this sandbox.
@@ -43,17 +42,17 @@ Commands still required:
 
 Operator manual checks:
 - Launch the demo as a native window.
-- Confirm the top bar shows Create, Reset, and disabled Settings.
-- Confirm disabled Settings does not change Count or Last action.
+- Confirm Create, Reset, disabled Settings, Increment, Count, Last action, and status strip still render correctly.
 - Click Increment twice, then Reset; Count should return to 0 and Last action should read reset.
 - Click Create; Count should stay unchanged and Last action should read create.
+- Confirm disabled Settings still does not change Count or Last action.
 - Resize below normal desktop size and confirm the window respects the starter min-size.
 - Inspect apps/apex-demo/src/main.rs and confirm the main UI path still uses Apex APIs, not raw egui widgets.
 
 Tests/goldens status:
-- Semantic golden updated: tests/goldens/semantic/phase01_demo_shell.golden
-- Behavior golden unchanged: tests/goldens/behavior/phase01_demo_counter.golden
-- Unit test added for disabled Settings semantic entry.
+- New semantic golden: tests/goldens/semantic/phase01_interaction_states.golden
+- Existing semantic golden unchanged: tests/goldens/semantic/phase01_demo_shell.golden
+- Existing behavior golden unchanged: tests/goldens/behavior/phase01_demo_counter.golden
 - Rust tests still need to be run locally because cargo is unavailable in this sandbox.
 
 Platform/package impact:
@@ -63,10 +62,10 @@ Platform/package impact:
 - No egui fork, no renderer surgery, no custom wgpu path.
 
 Exact next action:
-- Run cargo fmt --check, cargo build, cargo test, and cargo run -p apex-demo; then operator-check disabled Settings feel and inert behavior.
+- Run cargo fmt --check, cargo build, cargo test, and cargo run -p apex-demo; then operator-check that the demo still feels unchanged while interaction states are locked underneath.
 
 Source commit message:
-- Add disabled Settings action to Apex demo shell
+- Add Apex interaction state priority
 
 No CI:
 - confirmed no CI added or relied on

@@ -1,3 +1,5 @@
+use crate::response::ApexResponse;
+
 #[derive(Clone, Debug, Default, Eq, PartialEq)]
 pub struct ApexSemanticSnapshot {
     lines: Vec<String>,
@@ -39,9 +41,25 @@ pub fn phase01_demo_semantics(counter: usize, last_action: Option<&str>) -> Stri
         .render()
 }
 
+pub fn phase01_interaction_state_semantics() -> String {
+    let disabled = ApexResponse::new(true, true, true, true, false);
+    let pressed = ApexResponse::new(false, true, true, true, true);
+    let hovered = ApexResponse::new(false, true, false, true, true);
+    let focused = ApexResponse::new(false, false, false, true, true);
+    let idle = ApexResponse::new(false, false, false, false, true);
+
+    ApexSemanticSnapshot::new("phase01-interaction-states")
+        .push("disabled", disabled.interaction_state().as_str())
+        .push("pressed_priority", pressed.interaction_state().as_str())
+        .push("hovered_priority", hovered.interaction_state().as_str())
+        .push("focused_priority", focused.interaction_state().as_str())
+        .push("idle", idle.interaction_state().as_str())
+        .render()
+}
+
 #[cfg(test)]
 mod tests {
-    use super::phase01_demo_semantics;
+    use super::{phase01_demo_semantics, phase01_interaction_state_semantics};
 
     #[test]
     fn phase01_semantic_snapshot_matches_accepted_demo_shell_golden() {
@@ -66,5 +84,14 @@ mod tests {
 
         assert!(snapshot.contains("top_bar=Create Reset Settings"));
         assert!(snapshot.contains("disabled_action=Settings"));
+    }
+
+    #[test]
+    fn phase01_interaction_state_semantic_snapshot_matches_golden() {
+        let snapshot = phase01_interaction_state_semantics();
+        let golden =
+            include_str!("../../../../tests/goldens/semantic/phase01_interaction_states.golden");
+
+        assert_eq!(snapshot, golden);
     }
 }

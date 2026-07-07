@@ -1,6 +1,6 @@
 # Apex GUI Phase 01: Core Forge Shell
 
-**Status:** in progress - starter shell accepted; behavior locks and base correction active
+**Status:** in progress - starter shell accepted; interaction state locks active
 **Lane:** Apex GUI, Rust, MIT, egui/eframe-powered until engine surgery is earned
 **Phase rule:** no docs-first work. This phase starts with source, runnable behavior, tests, and operator proof.
 
@@ -184,6 +184,7 @@ The exact names may change during source work. The law is that the demo must use
 - 2026-07-06: `ApexUI_phase_1_base_2.tar` carried workspace/app files but omitted `crates/apex-ui` even though `Cargo.toml` referenced it. The next patch restores the missing crate source and continues from the accepted starter shell instead of requiring patch hand edits.
 - 2026-07-06: Demo status copy must avoid phase/proof language in normal UI. The status chip is corrected to product-facing starter-shell copy before locking semantic goldens.
 - 2026-07-06: `ApexUI_phase_1_base_3.tar` is confirmed caught up and green. Next source slice makes the disabled Settings action visible in the demo shell and locks that semantic surface; operator disabled-state pass is pending for this patch.
+- 2026-07-06: Operator confirmed the disabled Settings action is green in `ApexUI_phase_1_base_4.tar`. The next source slice promotes response state priority into Apex-owned `ApexInteractionState` language and locks that behavior with a semantic golden.
 
 ## Must Build In This Phase
 
@@ -333,7 +334,7 @@ The operator must launch the real demo app and confirm:
 - [x] No fake product workflow is shown.
 - [x] No raw egui demo clutter is visible.
 - [x] App code for the demo is readable as Apex API usage.
-- [ ] Disabled Settings action is visibly disabled and does not change Count or Last action.
+- [x] Disabled Settings action is visibly disabled and does not change Count or Last action.
 
 ## Close Gate
 

@@ -1,0 +1,6 @@
+snapshot:phase01-interaction-states
+disabled=disabled
+pressed_priority=pressed
+hovered_priority=hovered
+focused_priority=focused
+idle=idle
